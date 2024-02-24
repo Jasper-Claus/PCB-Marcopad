@@ -1,16 +1,12 @@
 import serial
 import webbrowser
 
-while True:
-    try:
-        # Öffnen Sie die serielle Verbindung
-        with serial.Serial('/dev/cu.usbmodem2201', 9600, timeout=1) as ser:
-            while True:
-                # Lesen Sie die nächste Zeile von der seriellen Verbindung
-                line = ser.readline().decode('utf-8').strip()
+# Öffnen Sie die serielle Verbindung
+ser = serial.Serial('/dev/cu.usbmodem2201', 9600)
 
-                # Wenn die Nachricht 'Button 2 gedrueckt' ist, öffnen Sie YouTube
-                if line == 'Button 2 gedrueckt':
-                    webbrowser.open('https://www.youtube.com')
-    except serial.SerialException:
-        print("Die serielle Verbindung wurde unterbrochen. Versuche es erneut...")
+while True:
+    # Lese die nächste Zeile von der seriellen Verbindung
+    line = ser.readline().decode('utf-8').strip()
+    # Wenn die Nachricht 'Button gedrückt' ist, führe den Shortcut aus
+    if line == 'Button gedrückt':
+        webbrowser.open('http://www.example.com')
