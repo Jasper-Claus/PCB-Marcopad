@@ -1,34 +1,39 @@
 from machine import Pin
 import time
 
+try:
+    # Erstellen Sie ein Pin-Objekt für den Button
+    button = Pin(2, Pin.IN, Pin.PULL_DOWN)
+
+    # Speichern Sie den aktuellen Zustand des Buttons
+    button_state = button.value()
+
+    while True:
+        # Überprüfen Sie, ob der Button-Zustand sich geändert hat
+        if button.value() != button_state:
+            # Aktualisieren Sie den Button-Zustand
+            button_state = button.value()
+
+            # Wenn der Button gedrückt wurde, senden Sie eine Nachricht
+            if button_state:
+                print('Button gedrueckt')
+
+        # Warten Sie eine kurze Zeit, bevor Sie den Button-Zustand erneut überprüfen
+        time.sleep(0.01)
+except Exception as e:
+    print(f"Ein Fehler ist aufgetreten: {e}")
+    
+    
+
+from machine import Pin
+import time
+
 # Definieren Sie Pin 2 als Eingang und aktivieren Sie den internen Pull-up-Widerstand
 button = Pin(2, Pin.IN, Pin.PULL_UP)
 
-# Definieren Sie Pin 25 als Ausgang (für die interne LED)
-led = Pin(25, Pin.OUT)
-
-# Zählvariable für die Anzahl der Tastendrücke
-button_presses = 0
-
-# Zustand des Buttons (0 = nicht gedrückt, 1 = gedrückt)
-button_state = 0
-
 while True:
-    # Wenn der Button gedrückt wird (LOW)
-    if button.value() == 0 and button_state == 0:
-        button_state = 1
-        button_presses += 1
+    # Wenn der Button gedrückt wird (LOW), sende eine Nachricht über die serielle Verbindung
+    if button.value() == 0:
         print('Button 2 gedrückt')
-        led.value(1)
-    # Wenn der Button losgelassen wird (HIGH)
-    elif button.value() == 1 and button_state == 1:
-        button_state = 0
-        led.value(0)
-    
-    # Schreibe den Button-Status in eine Datei alle 100 Tastendrücke
-    if button_presses % 100 == 0:
-        with open('button_status.txt', 'w') as f:
-            f.write('Button 2 wurde {} Mal gedrückt'.format(button_presses))
-    
-    # Warte eine Weile, um Prellen zu vermeiden
-    time.sleep(0.2)
+        # Warte eine Weile, um Prellen zu vermeiden
+        time.sleep(0.2)
