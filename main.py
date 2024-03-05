@@ -11,3 +11,4 @@ while True:
         print('Button 2 gedrückt')
         # Warte eine Weile, um Prellen zu vermeiden
         time.sleep(0.2)
+        
